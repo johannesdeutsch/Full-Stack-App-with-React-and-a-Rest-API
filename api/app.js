@@ -1,4 +1,5 @@
 'use strict';
+const cors = require('cors');
 const Sequelize = require('./models/index.js').sequelize;
 const routes = require('./routes.js');
 
@@ -19,6 +20,9 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', routes);
+
+//Enable all CORS requests
+app.use(cors());
 
 // send 404 if no other route matched
 app.use((req, res) => {
