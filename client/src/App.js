@@ -15,17 +15,12 @@ import UserSignOut from './components/UserSignOut';
 function App() {
   const [ user, setUser ] = useState(null);
   
-  useEffect(() => {
-    fetch('http://localhost:5000/api/courses') 
-    .then(response => response.json())
-    .then(data => setCourses(data))
-    .catch(error => console.error('Error fetching courses:', error));
-   }, []);
-  
   return (
     <div className="App">
       <Header />
       {/* Routes */}
+      <Courses />
+      <UserSignIn />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -42,9 +37,6 @@ function App() {
         <div className="course-list">
           <h2>Course List</h2>
           <ul>
-            {courses.map(course => (
-              <li key={course.id}>{course.title}</li>
-            ))}
           </ul>
         </div>
       </header>

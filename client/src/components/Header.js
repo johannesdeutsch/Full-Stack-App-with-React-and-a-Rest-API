@@ -9,10 +9,12 @@ const Header = () => {
             <div className="wrap header--flex">
                 <h1 className="header--logo"><a href="index.html">Courses</a></h1>
                 <nav>
+                {/* If the user is not authenticated: */}
                     <ul className="header--signedout">
-                        <li><a href="sign-up.html">Sign Up</a></li>
-                        <li><a href="sign-in.html">Sign In</a></li>
+                        <li><a href={<UserSignUp />}>Sign Up</a></li>
+                        <li><a href={<UserSignIn />}>Sign In</a></li>
                     </ul>
+                {/* If the user is authenticated, display user's name and button for signing out */}
                 </nav>
             </div>
         </header>
