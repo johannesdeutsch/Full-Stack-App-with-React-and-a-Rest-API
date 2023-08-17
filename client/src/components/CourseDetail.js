@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const CourseDetail = ({ match }) => {
     const courseId = match.params.id;
     const [courseDetail, setCourseDetail] = useState(null);
-    const history = useHistory(); //get the history object
+    const navigate = useNavigate(); //get the navigate object
 
     useEffect(() => {
         axios.get(`/courses/${courseId}`)
@@ -22,7 +22,7 @@ const CourseDetail = ({ match }) => {
         axios.delete(`/courses/${courseId}`)
             .then(response => {
                 //navigate to course list after successfully deleting the course
-                history.push('/courses');
+                navigate('/courses');
             })
             .catch(error => {
                 console.log('Error deleting course', error);
@@ -67,11 +67,6 @@ const CourseDetail = ({ match }) => {
                         </div>
                     </form>
                 </div>
-
-
-
-
-
             )}
         </>
     );
