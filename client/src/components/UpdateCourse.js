@@ -1,10 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const UpdateCourse = () => {
+    const { id } = useParams();
+
+    const [course, setCourse] = useState({
+        title: '',
+        description: '',
+        estimatedTime: '',
+        materialsNeeded: '',
+    });
+
+    useEffect(() => {
+        // Fetch the course details when the component mounts
+        axios.get(`/api/courses/${id}`)
+            .then(response => {
+                setCourse(response.data); // Update state with fetched course details
+            })
+            .catch(error => {
+                console.error('Error fetching course details:', error);
+            });
+    }, [id]);
+
+    const handleSubmit = async event => {
+        event.preventDefault();
+
+        try {
+            const response = await axios.put(`/api/courses/${id}`, course);
+
+            if (response.status === 204) {
+                // Successfully updated course
+                window.location.href = `/courses/${id}`; // Redirect to the course detail screen
+            } else {
+                console.error('Error updating course:', response.data.errors);
+            }
+        } catch (error) {
+            console.error('Error updating course:', error);
+        }
+    };
+
     return (
         <div className="wrap">
             <h2>Update Course</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="main--flex">
                     <div>
                         <label htmlFor="courseTitle">Course Title</label>
@@ -12,7 +51,8 @@ const UpdateCourse = () => {
                             id="courseTitle"
                             name="courseTitle"
                             type="text"
-                            defaultValue="Build a Basic Bookcase"
+                            value={course.title}
+                            onChange={e => setCourse({ ...course, title: e.target.value })}
                         />
                         <p>By Joe Smith</p>
                         <label htmlFor="courseDescription">Course Description</label>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import CourseDetail from './CourseDetail';
 import CreateCourse from './CreateCourse';
 
 
@@ -43,6 +42,7 @@ const Courses = () => {
                     New Course
                 </span>
             </Link>
+            <CreateCourse setCourses={setCourses} />
         </div>
     );
 }

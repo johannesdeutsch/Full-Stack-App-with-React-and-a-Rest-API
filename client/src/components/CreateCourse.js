@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const CreateCourse = () => {
+const CreateCourse = ({setCourses}) => {
+    const [course, setCourse] = useState({
+        title: '',
+        description: '',
+        estimatedTime: '',
+        materialsNeeded: '',
+    });
+
+    const handleSubmit = async event => {
+        event.preventDefault();
+
+        try {
+            const response = await axios.post('/api/courses', course);
+
+            if (response.status === 201) {
+                // Successfully created course, update the course list
+                setCourses(courses => [...courses, course]);
+                window.location.href = '/courses'; // Redirect to the list of courses
+            } else {
+                console.error('Error creating course:', response.data.errors);
+            }
+        } catch (error) {
+            console.error('Error creating course:', error);
+        }
+    };
+
     return (
         <div className="wrap">
             <h2>Create Course</h2>
+            <form onSubmit={handleSubmit}>
             <div className="validation--errors">
                 <h3>Validation Errors</h3>
                 <ul>
@@ -11,7 +38,6 @@ const CreateCourse = () => {
                     <li>Please provide a value for "Description"</li>
                 </ul>
             </div>
-            <form>
                 <div className="main--flex">
                     <div>
                         <label htmlFor="courseTitle">Course Title</label>
@@ -19,14 +45,16 @@ const CreateCourse = () => {
                             id="courseTitle"
                             name="courseTitle"
                             type="text"
-                            defaultValue=""
+                            value={course.title}
+                            onChange={e => setCourse({ ...course, title: e.target.value })}
                         />
                         <p>By Joe Smith</p>
                         <label htmlFor="courseDescription">Course Description</label>
                         <textarea
                             id="courseDescription"
                             name="courseDescription"
-                            defaultValue={""}
+                            value={course.description}
+                            onChange={e => setCourse({ ...course, description: e.target.value })}
                         />
                     </div>
                     <div>
@@ -35,13 +63,15 @@ const CreateCourse = () => {
                             id="estimatedTime"
                             name="estimatedTime"
                             type="text"
-                            defaultValue=""
+                            value={course.estimatedTime}
+                            onChange={e => setCourse({ ...course, estimatedTime: e.target.value })}
                         />
                         <label htmlFor="materialsNeeded">Materials Needed</label>
                         <textarea
                             id="materialsNeeded"
                             name="materialsNeeded"
-                            defaultValue={""}
+                            value={course.materialsNeeded}
+                            onChange={e => setCourse({ ...course, materialsNeeded: e.target.value })}
                         />
                     </div>
                 </div>
@@ -50,7 +80,7 @@ const CreateCourse = () => {
                 </button>
                 <button
                     className="button button-secondary"
-                    onclick="event.preventDefault(); location.href='index.html';"
+                    onClick={() => window.location.href = '/courses'}
                 >
                     Cancel
                 </button>
