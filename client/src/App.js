@@ -1,19 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
 
 import Courses from './components/Courses';
 import UserSignIn from './components/UserSignIn';
 import Header from './components/Header';
+import UserSignUp from './components/UserSignUp';
 
 
 function App() {
   return (
     <div className="App">
       <Header />
-      {/* Routes */}
-      <Courses />
-      <UserSignIn />
+      <Routes>
+        <Route path="/*" element={<Courses />} />
+        <Route path="signin" element={<UserSignIn />} />
+        <Route path="signup" element={<UserSignUp />} />
+      </Routes>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { NavLink, Route, Routes } from 'react-router-dom';
 import CreateCourse from './CreateCourse';
+import CourseDetail from './CourseDetail';
 
 
 
@@ -22,12 +23,12 @@ const Courses = () => {
     return (
         <div className="wrap main--grid">
             {courses.map(course => (
-                <Link to={`/courses/${course.id}`} key={course.id} className="course--module course--link">
+                <NavLink to={`/courses/${course.id}`} key={course.id} className="course--module course--link">
                     <h2 className="course--label">Course</h2>
                     <h3 className="course--title">{course.title}</h3>
-                </Link>
+                </NavLink>
             ))}
-            <Link to="/create-course" className="course--module course--add--module">
+            <NavLink to="/create-course" className="course--module course--add--module">
                 <span className="course--add--title">
                     <svg
                         version="1.1"
@@ -41,8 +42,11 @@ const Courses = () => {
                     </svg>
                     New Course
                 </span>
-            </Link>
-            <CreateCourse setCourses={setCourses} />
+            </NavLink>
+            <Routes>
+                <Route path="courses/create" element={<CreateCourse setCourses={setCourses} />} />
+                <Route path="courses/:id/*" element={<CourseDetail />} />
+            </Routes>
         </div>
     );
 }

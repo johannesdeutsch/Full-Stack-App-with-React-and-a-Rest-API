@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import UpdateCourse from './UpdateCourse';
+import { Route } from 'react-router-dom';
 
-const CourseDetail = ({ match }) => {
-    const courseId = match.params.id;
+const CourseDetail = () => {
+    const { id } = useParams();
     const [courseDetail, setCourseDetail] = useState(null);
     const navigate = useNavigate(); //get the navigate object
 
     useEffect(() => {
-        axios.get(`/courses/${courseId}`)
+        axios.get(`/courses/${id}`)
             .then(response => {
                 setCourseDetail(response.data);
             })
             .catch(error => {
                 console.log('Error fetching course details', error);
             });
-    }, [courseId]);
+    }, [id]);
 
     const handleDelete = () => {
         //send delete request to delete the course
-        axios.delete(`/courses/${courseId}`)
+        axios.delete(`/courses/${id}`)
             .then(response => {
                 //navigate to course list after successfully deleting the course
                 navigate('/courses');
@@ -33,17 +35,21 @@ const CourseDetail = ({ match }) => {
         <>
             <div className="actions--bar">
                 <div className="wrap">
-                    <Link className="button" to={`/courses/${courseId}/update`}>
-                        Update Course
-                    </Link>
+                     <NavLink className="button" to={`/courses/${courseDetail.id}/update`}>
+                     Update Course
+                     </NavLink>
                     <button className="button" onClick={handleDelete}>
                         Delete Course
                     </button>
-                    <Link className="button button-secondary" to="/courses">
+                    <NavLink className="button button-secondary" to="/courses">
                         Return to List
-                    </Link>
+                    </NavLink>
                 </div>
             </div>
+            <div className="wrap">
+                        <Route path="courses/:id/update" element={<UpdateCourse course={courseDetail} />} />
+                        {/* Render course details here */}
+                    </div>
             {courseDetail && (
                 <div className="wrap">
                     <h2>Course Detail</h2>

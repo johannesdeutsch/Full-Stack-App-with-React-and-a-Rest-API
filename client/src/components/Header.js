@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { NavLink, Route, Routes } from 'react-router-dom';
+import UserContext from '../context/UserContext';
+import UserSignOut from '../components/UserSignOut';
 
 const Header = () => {
-
+    const { user, actions } = useContext(UserContext);
 
 
     return (
@@ -9,12 +12,28 @@ const Header = () => {
             <div className="wrap header--flex">
                 <h1 className="header--logo"><a href="index.html">Courses</a></h1>
                 <nav>
-                {/* If the user is not authenticated: */}
-                    <ul className="header--signedout">
-                        <li><a href={<UserSignUp />}>Sign Up</a></li>
-                        <li><a href={<UserSignIn />}>Sign In</a></li>
-                    </ul>
-                {/* If the user is authenticated, display user's name and button for signing out */}
+                {user ? (
+                        // If the user is authenticated, display user's name and button for signing out
+                        <ul className="header--signedin">
+                            <li>Welcome, {user.firstName}!</li>
+                            <li>
+                                <button onClick={actions.signOut}>Sign Out</button>
+                            </li>
+                        </ul>
+                    ) : (
+                        // If the user is not authenticated, display buttons for signing in and signing up
+                        <ul className="header--signedout">
+                            <li>
+                                <NavLink to="/signup">Sign Up</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/signin">Sign In</NavLink>
+                            </li>
+                        </ul>
+                    )}
+                    <Routes>
+                        <Route path="signout" element={<UserSignOut />} />
+                    </Routes>
                 </nav>
             </div>
         </header>

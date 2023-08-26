@@ -1,37 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const UpdateCourse = () => {
-    const { id } = useParams();
+const UpdateCourse = ({course}) => {
 
-    const [course, setCourse] = useState({
-        title: '',
-        description: '',
-        estimatedTime: '',
-        materialsNeeded: '',
+    const { courseId } = useParams();
+    const navigate = useNavigate();
+
+    const [updatedCourse, setUpdatedCourse] = useState({
+        title: course.title,
+        description: course.description,
+        estimatedTime: course.estimatedTime,
+        materialsNeeded: course.materialsNeeded,
     });
 
     useEffect(() => {
         // Fetch the course details when the component mounts
-        axios.get(`/api/courses/${id}`)
+        axios.get(`/api/courses/${courseId}`)
             .then(response => {
-                setCourse(response.data); // Update state with fetched course details
+                setUpdatedCourse(response.data); // Update state with fetched course details
             })
             .catch(error => {
                 console.error('Error fetching course details:', error);
             });
-    }, [id]);
+    }, [courseId]);
 
     const handleSubmit = async event => {
         event.preventDefault();
 
         try {
-            const response = await axios.put(`/api/courses/${id}`, course);
+            const response = await axios.put(`/api/courses/${courseId}`, course);
 
             if (response.status === 204) {
                 // Successfully updated course
-                window.location.href = `/courses/${id}`; // Redirect to the course detail screen
+                window.location.href = `/courses/${courseId}`; // Redirect to the course detail screen
             } else {
                 console.error('Error updating course:', response.data.errors);
             }
@@ -51,8 +53,8 @@ const UpdateCourse = () => {
                             id="courseTitle"
                             name="courseTitle"
                             type="text"
-                            value={course.title}
-                            onChange={e => setCourse({ ...course, title: e.target.value })}
+                            value={updatedCourse.title}
+                            onChange={e => setUpdatedCourse({ ...updatedCourse, title: e.target.value })}
                         />
                         <p>By Joe Smith</p>
                         <label htmlFor="courseDescription">Course Description</label>
@@ -87,7 +89,7 @@ const UpdateCourse = () => {
                 </button>
                 <button
                     className="button button-secondary"
-                    onClick="event.preventDefault(); location.href='index.html';"
+                    onClick={() => navigate(`/courses/${course.id}`)} // Redirect to course detail
                 >
                     Cancel
                 </button>
