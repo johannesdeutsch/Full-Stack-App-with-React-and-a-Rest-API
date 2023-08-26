@@ -24,10 +24,10 @@ const Header = () => {
                         // If the user is not authenticated, display buttons for signing in and signing up
                         <ul className="header--signedout">
                             <li>
-                                <NavLink to="/signup">Sign Up</NavLink>
+                                <NavLink to="signup">Sign Up</NavLink>
                             </li>
                             <li>
-                                <NavLink to="/signin">Sign In</NavLink>
+                                <NavLink to="signin">Sign In</NavLink>
                             </li>
                         </ul>
                     )}

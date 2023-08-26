@@ -34,7 +34,7 @@ const UserSignIn = () => {
                 <input id="password" name="password" type="password" ref={password} placeholder="Password" />
                 <button className="button" type="submit">Sign In</button><button className="button button-secondary" onClick={handleCancel}>Cancel</button>
             </form>
-            <p>Don't have a user account? Click here to <NavLink to="/sign-up">sign up</NavLink>!</p>
+            <p>Don't have a user account? Click here to <NavLink to="sign-up">sign up</NavLink>!</p>
         </div>
     );
 }

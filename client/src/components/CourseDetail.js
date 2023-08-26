@@ -35,19 +35,19 @@ const CourseDetail = () => {
         <>
             <div className="actions--bar">
                 <div className="wrap">
-                     <NavLink className="button" to={`/courses/${courseDetail.id}/update`}>
+                     <NavLink className="button" to="update">
                      Update Course
                      </NavLink>
                     <button className="button" onClick={handleDelete}>
                         Delete Course
                     </button>
-                    <NavLink className="button button-secondary" to="/courses">
+                    <NavLink className="button button-secondary" to="courses">
                         Return to List
                     </NavLink>
                 </div>
             </div>
             <div className="wrap">
-                        <Route path="courses/:id/update" element={<UpdateCourse course={courseDetail} />} />
+                        <Route path="update" element={<UpdateCourse course={courseDetail} />} />
                         {/* Render course details here */}
                     </div>
             {courseDetail && (
