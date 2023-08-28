@@ -12,12 +12,12 @@ import UserSignUp from './components/UserSignUp';
 function App() {
   return (
     <div className="App">
-      <Header />
+       <Header />
       <Routes>
         <Route path="/*" element={<Courses />} />
         <Route path="signin" element={<UserSignIn />} />
         <Route path="signup" element={<UserSignUp />} />
-      </Routes>
+      </Routes> 
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

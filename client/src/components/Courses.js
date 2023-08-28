@@ -11,7 +11,7 @@ const Courses = () => {
 
     useEffect(() => {
         // Make the API request when the component mounts
-        axios.get('/courses')
+        axios.get('courses')
             .then(response => {
                 setCourses(response.data); // Update state with fetched courses
             })
