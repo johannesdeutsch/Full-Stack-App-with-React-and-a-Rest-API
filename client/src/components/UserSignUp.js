@@ -46,13 +46,13 @@ const UserSignUp = () => {
 
             <form onSubmit={handleSignUp}>
                 <label htmlFor="firstName">First Name</label>
-                <input id="firstName" name="firstName" type="text" ref="firstNameRef" />
+                <input id="firstName" name="firstName" type="text" ref={firstNameRef} />
                 <label htmlFor="lastName">Last Name</label>
-                <input id="lastName" name="lastName" type="text" ref="lastNameRef" />
+                <input id="lastName" name="lastName" type="text" ref={lastNameRef} />
                 <label htmlFor="emailAddress">Email Address</label>
-                <input id="emailAddress" name="emailAddress" type="email" ref="emailAddressRef" />
+                <input id="emailAddress" name="emailAddress" type="email" ref={emailAddressRef} />
                 <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" ref="passwordRef" />
+                <input id="password" name="password" type="password" ref={passwordRef} />
                 <button className="button" type="submit">Sign Up</button><button className="button button-secondary" onClick={event => { event.preventDefault(); navigate('/courses'); }}>Cancel</button>
             </form>
             <p>Already have a user account? Click here to <a href="sign-in.html">sign in</a>!</p>

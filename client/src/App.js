@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Courses from './components/Courses';
 import UserSignIn from './components/UserSignIn';
@@ -10,6 +10,8 @@ import UserSignUp from './components/UserSignUp';
 
 
 function App() {
+  const location = useLocation();
+  console.log('Current Location:', location.pathname);
   return (
     <div className="App">
        <Header />

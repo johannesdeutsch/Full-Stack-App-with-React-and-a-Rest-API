@@ -11,7 +11,7 @@ const Courses = () => {
 
     useEffect(() => {
         // Make the API request when the component mounts
-        axios.get('courses')
+        axios.get('/courses')
             .then(response => {
                 setCourses(response.data); // Update state with fetched courses
             })
@@ -44,8 +44,8 @@ const Courses = () => {
                 </span>
             </NavLink>
             <Routes>
-                <Route path="create" element={<CreateCourse setCourses={setCourses} />} />
-                <Route path=":id/*" element={<CourseDetail />} />
+                <Route path="courses/:id/*" element={<CourseDetail />} />
+                <Route path="courses/create" element={<CreateCourse setCourses={setCourses} />} />
             </Routes>
         </div>
     );
