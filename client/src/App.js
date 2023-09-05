@@ -7,6 +7,8 @@ import Courses from './components/Courses';
 import UserSignIn from './components/UserSignIn';
 import Header from './components/Header';
 import UserSignUp from './components/UserSignUp';
+import CourseDetail from './components/CourseDetail';
+import CreateCourse from './components/CreateCourse';
 
 
 function App() {
@@ -16,7 +18,9 @@ function App() {
     <div className="App">
        <Header />
       <Routes>
-        <Route path="/*" element={<Courses />} />
+        <Route path="/" element={<Courses />} />
+        <Route path="courses/:id/*" element={<CourseDetail />} />
+        <Route path="courses/create" element={<CreateCourse />} />
         <Route path="signin" element={<UserSignIn />} />
         <Route path="signup" element={<UserSignUp />} />
       </Routes> 

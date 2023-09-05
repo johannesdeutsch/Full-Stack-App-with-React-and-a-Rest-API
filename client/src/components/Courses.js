@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NavLink, Route, Routes } from 'react-router-dom';
-import CreateCourse from './CreateCourse';
-import CourseDetail from './CourseDetail';
+import { NavLink } from 'react-router-dom';
 
 
 
@@ -43,10 +41,6 @@ const Courses = () => {
                     New Course
                 </span>
             </NavLink>
-            <Routes>
-                <Route path="courses/:id/*" element={<CourseDetail />} />
-                <Route path="courses/create" element={<CreateCourse setCourses={setCourses} />} />
-            </Routes>
         </div>
     );
 }
