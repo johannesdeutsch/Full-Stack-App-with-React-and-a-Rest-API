@@ -10,7 +10,7 @@ const CourseDetail = () => {
     const navigate = useNavigate(); //get the navigate object
 
     useEffect(() => {
-        axios.get(`/courses/${id}`)
+        axios.get(`http://localhost:5000/courses/${id}`)
             .then(response => {
                 setCourseDetail(response.data);
             })
@@ -21,7 +21,7 @@ const CourseDetail = () => {
 
     const handleDelete = () => {
         //send delete request to delete the course
-        axios.delete(`/courses/${id}`)
+        axios.delete(`http://localhost:5000/courses/${id}`)
             .then(response => {
                 //navigate to course list after successfully deleting the course
                 navigate('/courses');

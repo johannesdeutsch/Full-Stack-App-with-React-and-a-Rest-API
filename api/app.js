@@ -12,6 +12,16 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 // create the Express app
 const app = express();
 app.use(express.json());
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  // Other CORS options as needed
+};
+
+//Enable all CORS requests
+app.use(cors(corsOptions));
+
+
 // setup a friendly greeting for the root route
 app.get('/', (req, res) => {
   res.json({
@@ -21,8 +31,8 @@ app.get('/', (req, res) => {
 
 app.use('/api', routes);
 
-//Enable all CORS requests
-app.use(cors());
+// Ignore requests for favicon.ico
+app.get('/favicon.ico', (req, res) => res.status(204));
 
 // send 404 if no other route matched
 app.use((req, res) => {

@@ -4,13 +4,16 @@ import { NavLink } from 'react-router-dom';
 
 
 
+
 const Courses = () => {
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
+        console.log('Component mounted');
         // Make the API request when the component mounts
-        axios.get('/courses')
+        axios.get('localhost:5000/courses')
             .then(response => {
+                console.log('Axios request successful', response);
                 setCourses(response.data); // Update state with fetched courses
             })
             .catch(error => {
@@ -26,7 +29,7 @@ const Courses = () => {
                     <h3 className="course--title">{course.title}</h3>
                 </NavLink>
             ))}
-            <NavLink to="create" className="course--module course--add--module">
+            <NavLink to="localhost:3000/courses/create" className="course--module course--add--module">
                 <span className="course--add--title">
                     <svg
                         version="1.1"

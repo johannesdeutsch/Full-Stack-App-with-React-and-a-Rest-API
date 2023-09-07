@@ -16,7 +16,7 @@ const UpdateCourse = ({course}) => {
 
     useEffect(() => {
         // Fetch the course details when the component mounts
-        axios.get(`/api/courses/${courseId}`)
+        axios.get(`localhost:5000/api/courses/${courseId}`)
             .then(response => {
                 setUpdatedCourse(response.data); // Update state with fetched course details
             })
@@ -29,7 +29,7 @@ const UpdateCourse = ({course}) => {
         event.preventDefault();
 
         try {
-            const response = await axios.put(`/api/courses/${courseId}`, course);
+            const response = await axios.put(`localhost:5000/courses/${courseId}`, course);
 
             if (response.status === 204) {
                 // Successfully updated course

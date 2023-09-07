@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import Courses from './components/Courses';
 import UserSignIn from './components/UserSignIn';
@@ -12,15 +12,13 @@ import CreateCourse from './components/CreateCourse';
 
 
 function App() {
-  const location = useLocation();
-  console.log('Current Location:', location.pathname);
   return (
     <div className="App">
        <Header />
       <Routes>
         <Route path="/" element={<Courses />} />
-        <Route path="courses/:id/*" element={<CourseDetail />} />
         <Route path="courses/create" element={<CreateCourse />} />
+        <Route path="courses/:id/*" element={<CourseDetail />} />
         <Route path="signin" element={<UserSignIn />} />
         <Route path="signup" element={<UserSignUp />} />
       </Routes> 
