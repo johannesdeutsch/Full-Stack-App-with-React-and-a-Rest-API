@@ -19,7 +19,7 @@ const CreateCourse = ({setCourses}) => {
 
         try {
             console.log('Before axios request');
-            const response = await axios.post('localhost:5000/courses', course);
+            const response = await axios.post('http://localhost:5000/api/courses', course);
             console.log(response);
             if (response.status === 201) {
                 // Successfully created course, update the course list

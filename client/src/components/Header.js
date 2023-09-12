@@ -10,27 +10,31 @@ const Header = () => {
     return (
         <header>
             <div className="wrap header--flex">
-                <h1 className="header--logo"><a href="index.html">Courses</a></h1>
+                <h1 className="header--logo"><NavLink to="/">Courses</NavLink></h1>
                 <nav>
-                {user ? (
-                        // If the user is authenticated, display user's name and button for signing out
-                        <ul className="header--signedin">
-                            <li>Welcome, {user.firstName}!</li>
-                            <li>
-                                <button onClick={actions.signOut}>Sign Out</button>
-                            </li>
-                        </ul>
-                    ) : (
-                        // If the user is not authenticated, display buttons for signing in and signing up
-                        <ul className="header--signedout">
-                            <li>
-                                <NavLink to="signup">Sign Up</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="signin">Sign In</NavLink>
-                            </li>
-                        </ul>
-                    )}
+                
+                        {/*If the user is authenticated, display user's name and button for signing out*/}
+                        <ul className="header--nav">
+                        {user ? (
+                            // If the user is authenticated, display user's name and button for signing out
+                            <>
+                                <li>Welcome, {user.firstName}!</li>
+                                <li>
+                                    <button onClick={actions.signOut}>Sign Out</button>
+                                </li>
+                            </>
+                        ) : (
+                            // If the user is not authenticated, display buttons for signing in and signing up
+                            <>
+                                <li>
+                                    <NavLink to="signup">Sign Up</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="signin">Sign In</NavLink>
+                                </li>
+                            </>
+                        )}
+                    </ul>
                     <Routes>
                         <Route path="signout" element={<UserSignOut />} />
                     </Routes>

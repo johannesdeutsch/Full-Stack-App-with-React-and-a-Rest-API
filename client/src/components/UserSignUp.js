@@ -21,7 +21,7 @@ const UserSignUp = () => {
         const password = passwordRef.current.value;
 
         try {
-          const response = await axios.post('localhost:5000/users', {
+          const response = await axios.post('http://localhost:5000/api/users', {
             firstName,
             lastName,
             emailAddress: email,

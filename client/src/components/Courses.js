@@ -11,7 +11,7 @@ const Courses = () => {
     useEffect(() => {
         console.log('Component mounted');
         // Make the API request when the component mounts
-        axios.get('localhost:5000/courses')
+        axios.get('http://localhost:5000/api/courses')
             .then(response => {
                 console.log('Axios request successful', response);
                 setCourses(response.data); // Update state with fetched courses
@@ -24,12 +24,12 @@ const Courses = () => {
     return (
         <div className="wrap main--grid">
             {courses.map(course => (
-                <NavLink to={`${course.id}`} key={course.id} className="course--module course--link">
+                <NavLink to={`/courses/${course.id}`} key={course.id} className="course--module course--link">
                     <h2 className="course--label">Course</h2>
                     <h3 className="course--title">{course.title}</h3>
                 </NavLink>
             ))}
-            <NavLink to="localhost:3000/courses/create" className="course--module course--add--module">
+            <NavLink to="courses/create" className="course--module course--add--module">
                 <span className="course--add--title">
                     <svg
                         version="1.1"
