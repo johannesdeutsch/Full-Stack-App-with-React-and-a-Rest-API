@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
-import { NavLink, Route, Routes} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import UserContext from '../context/UserContext';
-import UserSignOut from '../components/UserSignOut';
 
 const Header = () => {
     const { user, actions } = useContext(UserContext);
@@ -27,17 +26,17 @@ const Header = () => {
                             // If the user is not authenticated, display buttons for signing in and signing up
                             <>
                                 <li>
-                                    <NavLink to="signup">Sign Up</NavLink>
+                                    <NavLink to="/signup">Sign Up</NavLink>
                                 </li>
                                 <li>
-                                    <NavLink to="signin">Sign In</NavLink>
+                                    <NavLink to="/signin">Sign In</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink to="/signout">Sign Out</NavLink>
                                 </li>
                             </>
                         )}
                     </ul>
-                    <Routes>
-                        <Route path="signout" element={<UserSignOut />} />
-                    </Routes>
                 </nav>
             </div>
         </header>

@@ -31,7 +31,7 @@ const UserSignUp = () => {
           if (response.status === 201) {
             // Successful sign up, you can automatically sign in the user here if needed
             actions.signIn(email, password); // Sign in the user
-            navigate('/courses'); // Redirect to the list of courses
+            navigate('/'); // Redirect to the list of courses
           } else {
             console.log('Error signing up:', response.data.errors);
           }

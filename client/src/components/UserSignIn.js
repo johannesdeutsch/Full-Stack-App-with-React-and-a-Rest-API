@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { NavLink } from 'react-router-dom';
@@ -8,19 +8,36 @@ const UserSignIn = () => {
 
     const email = useRef(null);
     const password = useRef(null);
+    const [errors, setErrors] = useState([]);
 
     const navigate = useNavigate();
 
     // Event Handlers
-    const handleSignIn = (event) => {
+    const handleSignIn = async (event) => {
         event.preventDefault();
         actions.signIn(email.current.value, password.current.value);
-        navigate('/courses');
+
+
+        const credentials = {
+            email: email.current.value,
+            password: password.current.value
+        }
+
+        
+
+        try {
+            // TODO: get User from UserContext
+                // success (user !== null) -> show signout button and be signed in in header
+                // failure (user === null) -> update errors state
+        } catch (error) {
+            console.log(error);
+            navigate('/error');
+        }
     }
 
     const handleCancel = (event) => {
         event.preventDefault();
-        navigate('/courses');
+        navigate('/');
     }
 
     return (
