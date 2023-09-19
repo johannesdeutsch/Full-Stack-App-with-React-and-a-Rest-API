@@ -3,7 +3,8 @@ import { NavLink } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 
 const Header = () => {
-    const { user, actions } = useContext(UserContext);
+    const { authUser } = useContext(UserContext);
+    
 
 
     return (
@@ -14,12 +15,12 @@ const Header = () => {
                 
                         {/*If the user is authenticated, display user's name and button for signing out*/}
                         <ul className="header--nav">
-                        {user ? (
+                        {authUser ? (
                             // If the user is authenticated, display user's name and button for signing out
                             <>
-                                <li>Welcome, {user.firstName}!</li>
+                                <li>Welcome, {authUser.firstName}!</li>
                                 <li>
-                                    <button onClick={actions.signOut}>Sign Out</button>
+                                    <NavLink to="/signout">Sign Out</NavLink>
                                 </li>
                             </>
                         ) : (
@@ -31,9 +32,7 @@ const Header = () => {
                                 <li>
                                     <NavLink to="/signin">Sign In</NavLink>
                                 </li>
-                                <li>
-                                    <NavLink to="/signout">Sign Out</NavLink>
-                                </li>
+                                
                             </>
                         )}
                     </ul>

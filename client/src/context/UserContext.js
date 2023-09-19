@@ -14,41 +14,34 @@ export const UserProvider = (props) => {
                 Authorization: `Basic ${encodedCredentials}`
             }
         };
-        
+
         const response = await fetch('http://localhost:5000/api/users', fetchOptions);
-            console.log(response);
-            if (response.status === 200) {
-                const user = await response.json();
-                
-            } else if (response.status === 401) {
-
-            } else {
-                throw new Error();
-            }
-        
-        const newUser = {
-          firstName,
-          lastName,
-          emailAddress,
-          password
-        };
-        setAuthUser(newUser);
+        console.log(response);
+        if (response.status === 200) {
+            const user = await response.json();
+            setAuthUser(user);
+            return user;
+        } else if (response.status === 401) {
+            return null;
+        } else {
+            throw new Error();
+        }
     }
-    
+
     const signOutUser = () => {
-        setUser(null);
+        setAuthUser(null);
     }
 
-    return(
+    return (
         <UserContext.Provider value={{
-            authUser, 
+            authUser,
             actions: {
                 signIn: signInUser,
                 signOut: signOutUser
             }
 
-         }}>
-         {props.children}
+        }}>
+            {props.children}
         </UserContext.Provider>
     );
 }

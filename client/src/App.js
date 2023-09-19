@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
 
@@ -11,6 +10,8 @@ import CourseDetail from './components/CourseDetail';
 import CreateCourse from './components/CreateCourse';
 import UpdateCourse from './components/UpdateCourse';
 import UserSignOut from './components/UserSignOut';
+import UnhandledError from './components/UnhandledError';
+import PrivateRoute from './components/PrivateRoute';
 
 
 function App() {
@@ -19,32 +20,18 @@ function App() {
        <Header />
       <Routes>
         <Route path="/" element={<Courses />} />
-        <Route path="courses/create" element={<CreateCourse />} />
+        
         <Route path="courses/:id" element={<CourseDetail />} />
-        <Route path="courses/:id/update" element={<UpdateCourse />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="courses/create" element={<CreateCourse />} />
+          <Route path="courses/:id/update" element={<UpdateCourse />} />
+        </Route>
         <Route path="signin" element={<UserSignIn />} />
         <Route path="signup" element={<UserSignUp />} />
         <Route path="signout" element={<UserSignOut />} />
+        <Route path="error" element={<UnhandledError />} />
       </Routes> 
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <div className="course-list">
-          <h2>Course List</h2>
-          <ul>
-          </ul>
-        </div>
-      </header>
+      
     </div>
   );
 }

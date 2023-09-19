@@ -3,9 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-console.log('CreateCourse component loaded')
 
-const CreateCourse = ({setCourses}) => {
+const CreateCourse = ({ setCourses }) => {
     const navigate = useNavigate();
     const [course, setCourse] = useState({
         title: '',
@@ -13,20 +12,33 @@ const CreateCourse = ({setCourses}) => {
         estimatedTime: '',
         materialsNeeded: '',
     });
-    
+
+    const [validationErrors, setValidationErrors] = useState([]);
+
     const handleSubmit = async event => {
         event.preventDefault();
 
         try {
             console.log('Before axios request');
-            const response = await axios.post('http://localhost:5000/api/courses', course);
+            const response = await fetch('http://localhost:5000/api/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // You may include an authorization token if needed, but not user credentials
+                    // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
+                },
+                body: JSON.stringify(course),
+            });
             console.log(response);
             if (response.status === 201) {
                 // Successfully created course, update the course list
                 setCourses(courses => [...courses, course]);
                 navigate('/'); // Redirect to the list of courses
-            } else {
-                console.error('Error creating course:', response.data.errors);
+            } else if (response.status === 400) {
+                const data = await response.json();
+                if (data.errors) {
+                    setValidationErrors(data.errors)
+                }
             }
         } catch (error) {
             console.error('Error creating course:', error);
@@ -37,13 +49,16 @@ const CreateCourse = ({setCourses}) => {
         <div className="wrap">
             <h2>Create Course</h2>
             <form onSubmit={handleSubmit}>
-            <div className="validation--errors">
-                <h3>Validation Errors</h3>
-                <ul>
-                    <li>Please provide a value for "Title"</li>
-                    <li>Please provide a value for "Description"</li>
-                </ul>
-            </div>
+                {validationErrors.length > 0 && ( // Display validation errors conditionally
+                    <div className="validation--errors">
+                        <h3>Validation Errors</h3>
+                        <ul>
+                            {validationErrors.map((error, index) => (
+                                <li key={index}>{error}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
                 <div className="main--flex">
                     <div>
                         <label htmlFor="courseTitle">Course Title</label>

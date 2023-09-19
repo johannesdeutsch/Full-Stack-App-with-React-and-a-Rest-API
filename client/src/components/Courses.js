@@ -9,7 +9,6 @@ const Courses = () => {
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
-        console.log('Component mounted');
         // Make the API request when the component mounts
         axios.get('http://localhost:5000/api/courses')
             .then(response => {

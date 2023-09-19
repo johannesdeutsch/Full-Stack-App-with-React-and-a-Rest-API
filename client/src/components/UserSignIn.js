@@ -26,9 +26,12 @@ const UserSignIn = () => {
         
 
         try {
-            // TODO: get User from UserContext
-                // success (user !== null) -> show signout button and be signed in in header
-                // failure (user === null) -> update errors state
+            const user = await actions.signIn(credentials);
+            if (!user) {
+                 setErrors("Sign-in was unsuccessful");
+            } else if (user) {
+                navigate('/');
+            }
         } catch (error) {
             console.log(error);
             navigate('/error');
