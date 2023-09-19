@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../context/UserContext';
 
 
 
 const CreateCourse = ({ setCourses }) => {
+    const { authUser } = useContext(UserContext);
     const navigate = useNavigate();
     const [course, setCourse] = useState({
         title: '',
@@ -19,17 +20,27 @@ const CreateCourse = ({ setCourses }) => {
         event.preventDefault();
 
         try {
-            console.log('Before axios request');
+            if (!authUser) {
+                // Handle the case where the user is not authenticated
+                return;
+            } else {
+                const { email, password } = authUser; // Extract email and password from authUser
+
+            const encodedCredentials = btoa(`${email}:${password}`);
+            const headers = {
+                Authorization: `Basic ${encodedCredentials}`,
+                'Content-Type': 'application/json',
+                // You may include an authorization token if needed, but not user credentials
+                // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
+            };
+            console.log(`Email: ${email}, Password: ${password}`);
             const response = await fetch('http://localhost:5000/api/courses', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    // You may include an authorization token if needed, but not user credentials
-                    // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
-                },
-                body: JSON.stringify(course),
+                headers,
+                body: JSON.stringify(course), // Convert course object to JSON
             });
-            console.log(response);
+
+        
             if (response.status === 201) {
                 // Successfully created course, update the course list
                 setCourses(courses => [...courses, course]);
@@ -40,6 +51,9 @@ const CreateCourse = ({ setCourses }) => {
                     setValidationErrors(data.errors)
                 }
             }
+            }
+
+            
         } catch (error) {
             console.error('Error creating course:', error);
         }
