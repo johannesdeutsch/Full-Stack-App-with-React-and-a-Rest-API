@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import UserContext from '../context/UserContext';
+import ReactMarkdown from 'react-markdown';
 
 
 const CourseDetail = () => {
@@ -15,11 +16,13 @@ const CourseDetail = () => {
         axios.get(`http://localhost:5000/api/courses/${id}`)
             .then(response => {
                 setCourseDetail(response.data);
+                console.log(response.data);
             })
             .catch(error => {
                 console.log('Error fetching course details', error);
             });
     }, [id]);
+
 
     const handleDelete = () => {
         //send delete request to delete the course
@@ -34,19 +37,20 @@ const CourseDetail = () => {
     };
 
     const isCourseOwner = () => {
-        return authUser && courseDetail && courseDetail.user && authUser.id === courseDetail.user.id;
+        return authUser && courseDetail && courseDetail.User && authUser.id === courseDetail.User.id;
     };
 
     return (
-        <>
+
+        <div className="course-detail">
             <div className="actions--bar">
                 <div className="wrap">
-                    {isCourseOwner() && ( // Conditionally render based on ownership
+                    {isCourseOwner() && (
                         <NavLink className="button" to={`/courses/${id}/update`} state={{ course: courseDetail }}>
                             Update Course
                         </NavLink>
                     )}
-                    {isCourseOwner() && ( // Conditionally render based on ownership
+                    {isCourseOwner() && (
                         <button className="button" onClick={handleDelete}>
                             Delete Course
                         </button>
@@ -57,38 +61,34 @@ const CourseDetail = () => {
                 </div>
             </div>
             {courseDetail && (
-                <div className="wrap">
-                    {/* Render course details here */}
-                </div>
-            )}
-            {courseDetail && (
-                <div className="wrap">
+                <div className="course-detail-content wrap">
                     <h2>Course Detail</h2>
-                    <form>
-                        <div className="main--flex">
-                            <h3 className="course--detail--title">Course</h3>
-                            <h4 className="course--name">{courseDetail.title}</h4>
-                            {courseDetail.user && (
-                                <p>By {courseDetail.user.firstName} {courseDetail.user.lastName}</p>
-                            )}
-                            <p>{courseDetail.description}</p>
+                    <div className="course-header">
+                        <h1 className="course-title">{courseDetail.title}</h1>
+                        {courseDetail.User && (
+                            <p className="course-owner">By {courseDetail.User.firstName} {courseDetail.User.lastName}</p>
+                        )}
+                    </div>
+                    <div className="course-section">
+                        <h3 className="section-title">Description</h3>
+                        <div className="section-content">
+                            <ReactMarkdown children={courseDetail.description} />
                         </div>
-                        <div>
-                            <h3 className="course--detail--title">Estimated Time</h3>
-                            <p>{courseDetail.estimatedTime}</p>
-
-                            <h3 className="course--detail--title">Materials Needed</h3>
-                            <ul className="course--detail--list">
-                                {courseDetail.materialsNeeded?.split('\n').map((material, index) => (
-                                    material.trim() && <li key={index}>{material.trim().replace(/^\*\s*/, '')}</li>
-                                ))}
-                            </ul>
+                    </div>
+                    <div className="course-section">
+                        <h3 className="section-title">Estimated Time</h3>
+                        <p className="section-content">{courseDetail.estimatedTime}</p>
+                    </div>
+                    <div className="course-section">
+                        <h3 className="section-title">Materials Needed</h3>
+                        <div className="section-content">
+                            <ReactMarkdown children={courseDetail.materialsNeeded} />
                         </div>
-                    </form>
+                    </div>
                 </div>
             )}
-        </>
-    );
+        </div>
+    )
 }
 
 export default CourseDetail;

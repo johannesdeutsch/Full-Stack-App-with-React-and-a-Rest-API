@@ -24,16 +24,16 @@ const CreateCourse = ({ setCourses }) => {
                 // Handle the case where the user is not authenticated
                 return;
             } else {
-                const { email, password } = authUser; // Extract email and password from authUser
+                const { emailAddress, password } = authUser; // Extract email and password from authUser
 
-            const encodedCredentials = btoa(`${email}:${password}`);
+            const encodedCredentials = btoa(`${emailAddress}:${password}`);
             const headers = {
                 Authorization: `Basic ${encodedCredentials}`,
                 'Content-Type': 'application/json',
                 // You may include an authorization token if needed, but not user credentials
                 // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
             };
-            console.log(`Email: ${email}, Password: ${password}`);
+            console.log(`Email: ${emailAddress}, Password: ${password}`);
             const response = await fetch('http://localhost:5000/api/courses', {
                 method: 'POST',
                 headers,
@@ -43,7 +43,7 @@ const CreateCourse = ({ setCourses }) => {
         
             if (response.status === 201) {
                 // Successfully created course, update the course list
-                setCourses(courses => [...courses, course]);
+                setCourse(courses => [...courses, course]);
                 navigate('/'); // Redirect to the list of courses
             } else if (response.status === 400) {
                 const data = await response.json();

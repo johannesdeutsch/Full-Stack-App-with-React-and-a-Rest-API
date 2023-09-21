@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import './styles/global.css';
 import { Route, Routes } from 'react-router-dom';
 
 import Courses from './components/Courses';

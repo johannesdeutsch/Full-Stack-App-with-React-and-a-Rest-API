@@ -98,7 +98,7 @@ router.post('/courses', authenticateUser, asyncHandler(async (req, res) => {
     
     try {
         const courseData = req.body;
-        courseData.userId = req.user.id;
+        courseData.userId = req.currentUser.id;
         const newCourse = await Course.create(courseData);
         const errors = [];
         //check validation

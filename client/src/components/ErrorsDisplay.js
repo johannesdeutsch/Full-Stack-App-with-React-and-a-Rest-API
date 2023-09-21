@@ -1,16 +1,20 @@
-const ErrorsDisplay = ({ errors }) => {
-    let errorsDisplay = null;
+import React from 'react';
 
-    if (errors.length) {
-        errorsDisplay = (
-            <div className="validation-errors">
-                <ul>
-                    {errors.map((error, i) => <li key={i}>{error}</li>)}
-                </ul>
-            </div>
-        );
+const ErrorsDisplay = ({ errors }) => {
+    if (errors.length === 0) {
+        return null;
     }
-    return errorsDisplay
-}
+
+    return (
+        <div className="validation--errors">
+            <h3>Validation Errors</h3>
+            <ul>
+                {errors.map((error, index) => (
+                    <li key={index}>{error}</li>
+                ))}
+            </ul>
+        </div>
+    );
+};
 
 export default ErrorsDisplay;

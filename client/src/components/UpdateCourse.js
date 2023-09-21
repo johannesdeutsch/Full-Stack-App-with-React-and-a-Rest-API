@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import ErrorsDisplay from './ErrorsDisplay';
+import { UserContext } from '../context/UserContext';
 
 const UpdateCourse = () => {
-
+    const { authUser } = useContext(UserContext);
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
 
     const course = location.state && location.state.course;
+
+    const [validationErrors, setValidationErrors] = useState([]);
 
     const [updatedCourse, setUpdatedCourse] = useState({
         title: course ? course.title : '',
@@ -21,13 +24,38 @@ const UpdateCourse = () => {
         event.preventDefault();
 
         try {
-            const response = await axios.put(`http://localhost:5000/api/courses/${id}`, updatedCourse);
-
-            if (response.status === 204) {
-                // Successfully updated course
-                navigate(`/courses/${id}`); // Redirect to the course detail screen
+            if (!authUser) {
+                // Handle the case where the user is not authenticated
+                return;
             } else {
-                console.error('Error updating course:', response.data.errors);
+                const { emailAddress, password } = authUser; // Extract email and password from authUser
+
+                const encodedCredentials = btoa(`${emailAddress}:${password}`);
+                const headers = {
+                    Authorization: `Basic ${encodedCredentials}`,
+                    'Content-Type': 'application/json',
+                    // You may include an authorization token if needed, but not user credentials
+                    // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
+                };
+                console.log(updatedCourse);
+                const response = await fetch(`http://localhost:5000/api/courses/${id}`, {
+                    method: 'PUT',
+                    headers,
+                    body: JSON.stringify(updatedCourse), // Convert course object to JSON
+                });
+                
+                if (response.status === 204) {
+                    // Successfully updated course
+                    navigate(`/courses/${id}`); // Redirect to the course detail screen
+                } else if (response.status === 400) {
+                    // Handle validation errors from the API response
+                    const data = await response.json();
+                    if (data.errors) {
+                        setValidationErrors(data.errors);
+                    }
+                } else {
+                    console.error('Error updating course:', response.data.errors);
+                }
             }
         } catch (error) {
             console.error('Error updating course:', error);
@@ -38,6 +66,7 @@ const UpdateCourse = () => {
         <div className="wrap">
             <h2>Update Course</h2>
             <form onSubmit={handleSubmit}>
+                <ErrorsDisplay errors={validationErrors} />
                 <div className="main--flex">
                     <div>
                         <label htmlFor="courseTitle">Course Title</label>
@@ -54,6 +83,7 @@ const UpdateCourse = () => {
                             id="courseDescription"
                             name="courseDescription"
                             defaultValue={updatedCourse.description}
+                            onChange={e => setUpdatedCourse({ ...updatedCourse, description: e.target.value })}
                         />
                     </div>
                     <div>
@@ -63,12 +93,14 @@ const UpdateCourse = () => {
                             name="estimatedTime"
                             type="text"
                             defaultValue={updatedCourse.estimatedTime}
+                            onChange={e => setUpdatedCourse({ ...updatedCourse, estimatedTime: e.target.value })}
                         />
                         <label htmlFor="materialsNeeded">Materials Needed</label>
                         <textarea
                             id="materialsNeeded"
                             name="materialsNeeded"
                             defaultValue={updatedCourse.materialsNeeded}
+                            onChange={e => setUpdatedCourse({ ...updatedCourse, materialsNeeded: e.target.value })}
                         />
                     </div>
                 </div>

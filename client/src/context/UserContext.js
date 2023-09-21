@@ -19,6 +19,7 @@ export const UserProvider = (props) => {
         console.log(response);
         if (response.status === 200) {
             const user = await response.json();
+            user.password = credentials.password;
             setAuthUser(user);
             return user;
         } else if (response.status === 401) {
@@ -28,7 +29,7 @@ export const UserProvider = (props) => {
         }
     }
 
-    
+
 
     const signOutUser = () => {
         setAuthUser(null);

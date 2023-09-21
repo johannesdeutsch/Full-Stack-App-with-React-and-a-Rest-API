@@ -11,13 +11,13 @@ const UserSignUp = () => {
   const lastName = useRef(null);
   const emailAddress = useRef(null);
   const password = useRef(null);
-  const [errors, setErrors] = useState([]);
+  const [validationErrors, setValidationErrors] = useState([]);
 
   const handleSignUp = async event => {
     event.preventDefault();
 
     if (!firstName.current.value || !lastName.current.value || !emailAddress.current.value || !password.current.value) {
-      setErrors(['Please fill out every field']);
+      setValidationErrors(['Please fill out every field']);
       return;
     }
 
@@ -36,18 +36,21 @@ const UserSignUp = () => {
       body: JSON.stringify(user)
     }
 
-    
-
-
     try {
       const response = await fetch("http://localhost:5000/api/users", fetchOptions);
 
       if (response.status === 201) {
         console.log(`${user.firstName} is successfully signed up and authenticated`);
+      } else if (response.status === 400) {
+        const data = await response.json();
+        if (data.errors) {
+          setValidationErrors(data.errors);
+        } else {
+          throw new Error();
+        }
       } else {
         throw new Error();
       }
-
       
     } catch (error) {
       console.log(error);
@@ -62,7 +65,7 @@ const UserSignUp = () => {
   return (
     <div className="form--centered">
       <h2>Sign Up</h2>
-      <ErrorsDisplay errors={errors} />
+      <ErrorsDisplay errors={validationErrors} />
       <form onSubmit={handleSignUp}>
         <label htmlFor="firstName">First Name</label>
         <input id="firstName" name="firstName" type="text" ref={firstName} />
