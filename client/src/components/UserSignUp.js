@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import ErrorsDisplay from './ErrorsDisplay';
 
@@ -48,10 +48,11 @@ const UserSignUp = () => {
         } else {
           throw new Error();
         }
+      } else if (response.status === 500) {
+        navigate('/error');
       } else {
         throw new Error();
       }
-      
     } catch (error) {
       console.log(error);
       navigate("/error");
@@ -77,7 +78,7 @@ const UserSignUp = () => {
         <input id="password" name="password" type="password" ref={password} />
         <button className="button" type="submit">Sign Up</button><button className="button button-secondary" onClick={event => { event.preventDefault(); navigate('/'); }}>Cancel</button>
       </form>
-      <p>Already have a user account? Click here to <a href="sign-in.html">sign in</a>!</p>
+      <p>Already have a user account? Click here to <NavLink to="signin">sign in</NavLink>!</p>
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import { useContext, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { NavLink } from 'react-router-dom';
 
 const UserSignIn = () => {
     const { actions } = useContext(UserContext);
+    const location = useLocation();
+    console.log(location);
 
     const email = useRef(null);
     const password = useRef(null);
@@ -15,6 +17,10 @@ const UserSignIn = () => {
     // Event Handlers
     const handleSignIn = async (event) => {
         event.preventDefault();
+        let from = '/';
+        if(location.state) {
+            from = location.state?.from || '/';
+        }
         actions.signIn(email.current.value, password.current.value);
 
 
@@ -29,8 +35,9 @@ const UserSignIn = () => {
             const user = await actions.signIn(credentials);
             if (!user) {
                  setErrors("Sign-in was unsuccessful");
+                 errors(setErrors);
             } else if (user) {
-                navigate('/');
+                navigate(from);
             }
         } catch (error) {
             console.log(error);

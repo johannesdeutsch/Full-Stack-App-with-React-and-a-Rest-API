@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 
 
 
 const Courses = () => {
+    const navigate = useNavigate(); //get the navigate object
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
@@ -17,8 +18,21 @@ const Courses = () => {
             })
             .catch(error => {
                 console.log('Error fetching and parsing courses', error);
+                if (error.response && error.response.status === 500) {
+                    // Redirect to the /error path for internal server errors
+                    navigate('/error');
+                } 
             });
-    }, []);
+    }, [navigate]);
+
+    const renderNewCourseLink = () => {
+        const handleNewCourseClick = () => {
+            if (authUser) {
+                navigate('courses/create');
+            } else {
+                navigate('/signin', { state: { from: 'courses/create' } });
+            }
+        };
 
     return (
         <div className="wrap main--grid">
@@ -28,7 +42,7 @@ const Courses = () => {
                     <h3 className="course--title">{course.title}</h3>
                 </NavLink>
             ))}
-            <NavLink to="courses/create" className="course--module course--add--module">
+            <NavLink to="courses/create" className="course--module course--add--module" onClick={handleNewCourseClick}>
                 <span className="course--add--title">
                     <svg
                         version="1.1"

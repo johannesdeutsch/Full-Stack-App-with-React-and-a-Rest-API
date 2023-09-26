@@ -50,6 +50,8 @@ const CreateCourse = ({ setCourses }) => {
                 if (data.errors) {
                     setValidationErrors(data.errors)
                 }
+            } else if (response.status === 500) {
+                navigate('/error');
             }
             }
 

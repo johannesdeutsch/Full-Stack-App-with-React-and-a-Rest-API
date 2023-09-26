@@ -1,9 +1,11 @@
 import { createContext, useState } from "react";
+import Cookies from 'js-cookie';
 
 export const UserContext = createContext(null);
 
 export const UserProvider = (props) => {
-    const [authUser, setAuthUser] = useState(null);
+    const cookie = Cookies.get("authenticatedUser");
+    const [authUser, setAuthUser] = useState(cookie ? JSON.parse(cookie) : null);
 
     const signInUser = async (credentials) => {
         const encodedCredentials = btoa(`${credentials.email}:${credentials.password}`);
@@ -21,6 +23,7 @@ export const UserProvider = (props) => {
             const user = await response.json();
             user.password = credentials.password;
             setAuthUser(user);
+            Cookies.set("authenticatedUser", JSON.stringify(user), {expires: 1});
             return user;
         } else if (response.status === 401) {
             return null;
@@ -33,6 +36,8 @@ export const UserProvider = (props) => {
 
     const signOutUser = () => {
         setAuthUser(null);
+        Cookies.remove("authenticatedUser");
+        console.log('authenticatedUser');
     }
 
     return (

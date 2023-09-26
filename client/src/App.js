@@ -13,6 +13,9 @@ import UpdateCourse from './components/UpdateCourse';
 import UserSignOut from './components/UserSignOut';
 import UnhandledError from './components/UnhandledError';
 import PrivateRoute from './components/PrivateRoute';
+import NotFound from './components/NotFound';
+import Forbidden from './components/Forbidden';
+
 
 
 function App() {
@@ -20,8 +23,7 @@ function App() {
     <div className="App">
        <Header />
       <Routes>
-        <Route path="/" element={<Courses />} />
-        
+        <Route path="/" element={<Courses />} />  
         <Route path="courses/:id" element={<CourseDetail />} />
         <Route element={<PrivateRoute />}>
           <Route path="courses/create" element={<CreateCourse />} />
@@ -31,8 +33,10 @@ function App() {
         <Route path="signup" element={<UserSignUp />} />
         <Route path="signout" element={<UserSignOut />} />
         <Route path="error" element={<UnhandledError />} />
-      </Routes> 
-      
+        <Route path="notfound" element={<NotFound />} />
+        <Route path="forbidden" element={<Forbidden />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>  
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import UserContext from '../context/UserContext';
+import { UserContext } from '../context/UserContext';
 import ReactMarkdown from 'react-markdown';
 
 
@@ -20,8 +20,14 @@ const CourseDetail = () => {
             })
             .catch(error => {
                 console.log('Error fetching course details', error);
+                if (error.response && error.response.status === 500) {
+                    // Redirect to the /error path for internal server errors
+                    navigate('/error');
+                } else {
+                    navigate('/notfound');
+                }
             });
-    }, [id]);
+    }, [id, navigate]);
 
 
     const handleDelete = () => {
@@ -33,6 +39,10 @@ const CourseDetail = () => {
             })
             .catch(error => {
                 console.log('Error deleting course', error);
+                if (error.response && error.response.status === 500) {
+                    // Redirect to the /error path for internal server errors
+                    navigate('/error');
+                } 
             });
     };
 
