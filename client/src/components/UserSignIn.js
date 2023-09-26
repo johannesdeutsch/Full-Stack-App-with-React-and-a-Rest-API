@@ -8,6 +8,7 @@ const UserSignIn = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
+
     const email = useRef(null);
     const password = useRef(null);
     const [errors, setErrors] = useState([]);
@@ -18,7 +19,13 @@ const UserSignIn = () => {
 
     const handleSignIn = async (event) => {
         event.preventDefault();
+        //location state for redirecting the user back to the create course page when they came from there
+        let from = "/courses/create";
+        if (location.state) {
+            from = location.state.from;
+        }
 
+        //get the values of email and password fields
         const credentials = {
             email: email.current.value,
             password: password.current.value,
@@ -31,7 +38,6 @@ const UserSignIn = () => {
                 errors(setErrors);
             } else if (user) {
                 // Check if there is a 'from' property in the location state
-                const from = location.state?.from || '/';
                 navigate(from);
               }
         } catch (error) {
@@ -40,6 +46,7 @@ const UserSignIn = () => {
         }
     };
 
+    //navigate the user back to the main page if Cancel is entered
     const handleCancel = (event) => {
         event.preventDefault();
         navigate('/');

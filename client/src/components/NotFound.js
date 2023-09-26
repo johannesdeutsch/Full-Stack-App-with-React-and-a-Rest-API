@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-
+// this component shows the "Not Found" message for 404 errors, when this route didn't exist
 const NotFound = () => {
 
 

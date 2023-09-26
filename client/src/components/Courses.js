@@ -6,10 +6,10 @@ import UserContext from '../context/UserContext'; // Import UserContext
 
 const Courses = () => {
     const navigate = useNavigate();
-    const { authUser } = useContext(UserContext); // Get authUser from context
+    const { authUser } = useContext(UserContext); 
     const [courses, setCourses] = useState([]);
    
-
+    //gets the list of courses from the REST API
     useEffect(() => {
         // Make the API request when the component mounts
         axios.get('http://localhost:5000/api/courses')
@@ -52,7 +52,7 @@ const Courses = () => {
                     </span>
                 </NavLink>
             ) : (
-                // Render "New Course" button as a regular button if user is not signed in
+                // Render "New Course" link and redirects to the signin screen if user is not signed in
                 <NavLink to="/signin" className="course--module course--add--module">
                     <span className="course--add--title">
                         <svg

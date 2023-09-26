@@ -12,7 +12,7 @@ const CourseDetail = () => {
     const [courseDetail, setCourseDetail] = useState(null);
     const { authUser } = useContext(UserContext);
 
-
+    //gets the specific course data from the REST API
     useEffect(() => {
         axios.get(`http://localhost:5000/api/courses/${id}`)
             .then(response => {
@@ -48,12 +48,12 @@ const CourseDetail = () => {
             });
     };
 
+    //checks if the use is the owner of the course
     const isCourseOwner = () => {
         return authUser && courseDetail && courseDetail.User && authUser.id === courseDetail.User.id;
     };
 
     return (
-
         <div className="course-detail">
             <div className="actions--bar">
                 <div className="wrap">

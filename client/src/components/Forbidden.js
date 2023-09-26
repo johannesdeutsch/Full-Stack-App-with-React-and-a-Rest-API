@@ -1,5 +1,6 @@
 import React from 'react';
 
+//this component displays "Forbidden"
 const Forbidden = () => {
 
     return (

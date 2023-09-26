@@ -40,11 +40,10 @@ const UpdateCourse = () => {
                 const { emailAddress, password } = authUser; // Extract email and password from authUser
 
                 const encodedCredentials = btoa(`${emailAddress}:${password}`);
+                //sending a fetch request with the PUT method to update a course
                 const headers = {
                     Authorization: `Basic ${encodedCredentials}`,
                     'Content-Type': 'application/json',
-                    // You may include an authorization token if needed, but not user credentials
-                    // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
                 };
                 console.log(updatedCourse);
                 const response = await fetch(`http://localhost:5000/api/courses/${id}`, {

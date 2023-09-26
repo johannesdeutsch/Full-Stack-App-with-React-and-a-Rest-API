@@ -27,11 +27,11 @@ const CreateCourse = ({ setCourses }) => {
                 const { emailAddress, password } = authUser; // Extract email and password from authUser
 
             const encodedCredentials = btoa(`${emailAddress}:${password}`);
+            
+            //Fetch request to the api to create a new course with the POST method
             const headers = {
                 Authorization: `Basic ${encodedCredentials}`,
                 'Content-Type': 'application/json',
-                // You may include an authorization token if needed, but not user credentials
-                // 'Authorization': 'Bearer YOUR_TOKEN_HERE',
             };
             console.log(`Email: ${emailAddress}, Password: ${password}`);
             const response = await fetch('http://localhost:5000/api/courses', {

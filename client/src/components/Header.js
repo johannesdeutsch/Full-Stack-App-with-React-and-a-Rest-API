@@ -1,15 +1,10 @@
 import React, { useContext } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 
+//stateless component with Welcome message, SignIn, SignUp and SignOut navigation links
 const Header = () => {
     const { authUser } = useContext(UserContext);
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const handleSignInClick = () => {
-        navigate('/signin', { state: { from: location.pathname } });
-    };
 
     return (
         <header>
@@ -18,7 +13,7 @@ const Header = () => {
                     <NavLink to="/">Courses</NavLink>
                 </h1>
                 <nav>
-                    {/* If the user is authenticated, display user's name and button for signing out */}
+                    {/* If the user is authenticated, display user's name and navigation link for signing out */}
                     <ul className="header--nav">
                         {authUser ? (
                             <>
@@ -29,7 +24,7 @@ const Header = () => {
                                     </NavLink>
                                 </li>
                             </>
-                        ) : (
+                        ) : ( /* If the user is not authenticated, show SignUp and SignIn links */
                             <>
                                 <li>
                                     <NavLink to="/signup" className="header-nav-buttons">
@@ -40,7 +35,6 @@ const Header = () => {
                                     <NavLink
                                         to="/signin"
                                         className="header-nav-buttons"
-                                        onClick={handleSignInClick}
                                     >
                                         Sign In
                                     </NavLink>
