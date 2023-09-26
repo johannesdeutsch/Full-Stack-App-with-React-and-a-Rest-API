@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext';
 import ReactMarkdown from 'react-markdown';
@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 
 const CourseDetail = () => {
     const navigate = useNavigate(); //get the navigate object
+    const location = useLocation();
     const { id } = useParams();
     const [courseDetail, setCourseDetail] = useState(null);
     const { authUser } = useContext(UserContext);
@@ -27,7 +28,8 @@ const CourseDetail = () => {
                     navigate('/notfound');
                 }
             });
-    }, [id, navigate]);
+            localStorage.setItem('previousLocation', location.pathname);
+    }, [id, navigate, location.pathname]);
 
 
     const handleDelete = () => {

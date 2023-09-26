@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
-
-
+import UserContext from '../context/UserContext'; // Import UserContext
 
 
 const Courses = () => {
-    const navigate = useNavigate(); //get the navigate object
+    const navigate = useNavigate();
+    const { authUser } = useContext(UserContext); // Get authUser from context
     const [courses, setCourses] = useState([]);
+   
 
     useEffect(() => {
         // Make the API request when the component mounts
@@ -25,15 +26,6 @@ const Courses = () => {
             });
     }, [navigate]);
 
-    const renderNewCourseLink = () => {
-        const handleNewCourseClick = () => {
-            if (authUser) {
-                navigate('courses/create');
-            } else {
-                navigate('/signin', { state: { from: 'courses/create' } });
-            }
-        };
-
     return (
         <div className="wrap main--grid">
             {courses.map(course => (
@@ -42,21 +34,41 @@ const Courses = () => {
                     <h3 className="course--title">{course.title}</h3>
                 </NavLink>
             ))}
-            <NavLink to="courses/create" className="course--module course--add--module" onClick={handleNewCourseClick}>
-                <span className="course--add--title">
-                    <svg
-                        version="1.1"
-                        xmlns="http://www.w3.org/2000/svg"
-                        x="0px"
-                        y="0px"
-                        viewBox="0 0 13 13"
-                        className="add"
-                    >
-                        <polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 " />
-                    </svg>
-                    New Course
-                </span>
-            </NavLink>
+            {authUser ? (
+                // Render "New Course" link if user is signed in
+                <NavLink to="courses/create" className="course--module course--add--module">
+                    <span className="course--add--title">
+                        <svg
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 13 13"
+                            className="add"
+                        >
+                            <polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 " />
+                        </svg>
+                        New Course
+                    </span>
+                </NavLink>
+            ) : (
+                // Render "New Course" button as a regular button if user is not signed in
+                <NavLink to="/signin" className="course--module course--add--module">
+                    <span className="course--add--title">
+                        <svg
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 13 13"
+                            className="add"
+                        >
+                            <polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 " />
+                        </svg>
+                        New Course
+                    </span>
+                </NavLink>
+            )}
         </div>
     );
 }
