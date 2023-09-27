@@ -4,10 +4,10 @@ import UserContext from '../context/UserContext';
 
 
 const UserSignIn = () => {
-    const { actions } = useContext(UserContext);
+    const { actions } = useContext(UserContext);
     const location = useLocation();
     const navigate = useNavigate();
-
+    console.log(location);
 
     const email = useRef(null);
     const password = useRef(null);
@@ -20,11 +20,13 @@ const UserSignIn = () => {
     const handleSignIn = async (event) => {
         event.preventDefault();
         //location state for redirecting the user back to the create course page when they came from there
-        let from = "/courses/create";
+        
+        let from = '/';
+
         if (location.state) {
             from = location.state.from;
         }
-
+        
         //get the values of email and password fields
         const credentials = {
             email: email.current.value,
@@ -37,9 +39,8 @@ const UserSignIn = () => {
                 setErrors("Sign-in was unsuccessful");
                 errors(setErrors);
             } else if (user) {
-                // Check if there is a 'from' property in the location state
                 navigate(from);
-              }
+            } 
         } catch (error) {
             console.log(error);
             navigate('/error');
@@ -63,7 +64,7 @@ const UserSignIn = () => {
         <button className="button" type="submit">Sign In</button>
         <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
       </form>
-      <p>Don't have a user account? Click here to <NavLink to="sign-up">sign up</NavLink>!</p>
+      <p>Don't have a user account? Click here to <NavLink to="/signup">sign up</NavLink>!</p>
     </div>
   );
 };

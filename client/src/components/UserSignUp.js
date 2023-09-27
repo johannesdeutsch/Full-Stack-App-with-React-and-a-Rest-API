@@ -96,7 +96,7 @@ const UserSignUp = () => {
         <input id="password" name="password" type="password" ref={password} />
         <button className="button" type="submit">Sign Up</button><button className="button button-secondary" onClick={event => { event.preventDefault(); navigate('/'); }}>Cancel</button>
       </form>
-      <p>Already have a user account? Click here to <NavLink to="signin">sign in</NavLink>!</p>
+      <p>Already have a user account? Click here to <NavLink to="/signin">sign in</NavLink>!</p>
     </div>
   );
 }

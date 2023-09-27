@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import './styles/global.css';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 import Courses from './components/Courses';
 import UserSignIn from './components/UserSignIn';
@@ -35,7 +35,7 @@ function App() {
         <Route path="error" element={<UnhandledError />} />
         <Route path="notfound" element={<NotFound />} />
         <Route path="forbidden" element={<Forbidden />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="notfound" />} />
       </Routes>  
     </div>
   );

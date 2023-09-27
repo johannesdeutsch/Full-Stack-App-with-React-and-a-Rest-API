@@ -23,10 +23,13 @@ const UpdateCourse = () => {
 
     useEffect(() => {
         // Check if the authenticated user is the owner of the course
-        if (authUser && course && course.User && authUser.id === course.User.id) {
+        if (!authUser || !course || !course.User || authUser.id !== course.User.id) {
+            // Redirect to the /forbidden path for unauthenticated users or unauthorized access
+            navigate('/forbidden');
+        } else {
             setIsCourseOwner(true);
         }
-    }, [authUser, course]);
+    }, [authUser, course, navigate]);
 
     const handleSubmit = async event => {
         event.preventDefault();
@@ -89,7 +92,7 @@ return (
                         value={updatedCourse.title}
                         onChange={e => setUpdatedCourse({ ...updatedCourse, title: e.target.value })}
                     />
-                    <p>By Joe Smith</p>
+                    <p>By {authUser.firstName} {authUser.lastName}</p>
                     <label htmlFor="courseDescription">Course Description</label>
                     <textarea
                         id="courseDescription"

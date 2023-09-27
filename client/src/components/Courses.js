@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { NavLink, useNavigate } from 'react-router-dom';
-import UserContext from '../context/UserContext'; // Import UserContext
+
 
 
 const Courses = () => {
     const navigate = useNavigate();
-    const { authUser } = useContext(UserContext); 
     const [courses, setCourses] = useState([]);
-   
+    
+
     //gets the list of courses from the REST API
     useEffect(() => {
         // Make the API request when the component mounts
@@ -22,7 +22,7 @@ const Courses = () => {
                 if (error.response && error.response.status === 500) {
                     // Redirect to the /error path for internal server errors
                     navigate('/error');
-                } 
+                }
             });
     }, [navigate]);
 
@@ -34,9 +34,8 @@ const Courses = () => {
                     <h3 className="course--title">{course.title}</h3>
                 </NavLink>
             ))}
-            {authUser ? (
-                // Render "New Course" link if user is signed in
-                <NavLink to="courses/create" className="course--module course--add--module">
+                {/*Render "New Course" link if user is signed in*/}
+                <NavLink to='/courses/create' className="course--module course--add--module">
                     <span className="course--add--title">
                         <svg
                             version="1.1"
@@ -51,24 +50,6 @@ const Courses = () => {
                         New Course
                     </span>
                 </NavLink>
-            ) : (
-                // Render "New Course" link and redirects to the signin screen if user is not signed in
-                <NavLink to="/signin" className="course--module course--add--module">
-                    <span className="course--add--title">
-                        <svg
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            x="0px"
-                            y="0px"
-                            viewBox="0 0 13 13"
-                            className="add"
-                        >
-                            <polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 " />
-                        </svg>
-                        New Course
-                    </span>
-                </NavLink>
-            )}
         </div>
     );
 }

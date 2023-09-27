@@ -23,9 +23,9 @@ const CourseDetail = () => {
                 console.log('Error fetching course details', error);
                 if (error.response && error.response.status === 500) {
                     // Redirect to the /error path for internal server errors
-                    navigate('/error');
-                } else {
                     navigate('/notfound');
+                } else {
+                    navigate('/error');
                 }
             });
             localStorage.setItem('previousLocation', location.pathname);
