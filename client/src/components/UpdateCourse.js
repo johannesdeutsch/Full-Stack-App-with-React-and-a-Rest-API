@@ -38,6 +38,13 @@ const UpdateCourse = () => {
                         estimatedTime: courseData.estimatedTime,
                         materialsNeeded: courseData.materialsNeeded,
                     });
+                    if (!authUser || authUser.id !== courseData.User.id) {
+                        console.log(course);
+                        console.log(authUser);// Redirect to the /forbidden path for unauthenticated users or unauthorized access
+                        navigate('/forbidden');
+                    } else {
+                        setIsCourseOwner(true);
+                    }
                 } else if (response.status === 404) {
                     navigate('/notfound');
                 } else {
@@ -52,16 +59,7 @@ const UpdateCourse = () => {
     }, [id, navigate]);
 
 
-    useEffect(() => {
-        // Check if the authenticated user is the owner of the course
-        if (!authUser || !course || !course.User || authUser.id !== course.User.id) {
-            console.log(course);
-            console.log(authUser);// Redirect to the /forbidden path for unauthenticated users or unauthorized access
-            navigate('/forbidden');
-        } else {
-            setIsCourseOwner(true);
-        }
-    }, [authUser, course, navigate]);
+    
 
     const handleSubmit = async event => {
         event.preventDefault();

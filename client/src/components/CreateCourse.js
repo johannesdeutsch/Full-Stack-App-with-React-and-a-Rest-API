@@ -85,7 +85,7 @@ const CreateCourse = ({ setCourses }) => {
                             value={course.title}
                             onChange={e => setCourse({ ...course, title: e.target.value })}
                         />
-                        <p>By Joe Smith</p>
+                        <p>By {authUser.firstName} {authUser.lastName}</p>
                         <label htmlFor="courseDescription">Course Description</label>
                         <textarea
                             id="courseDescription"
