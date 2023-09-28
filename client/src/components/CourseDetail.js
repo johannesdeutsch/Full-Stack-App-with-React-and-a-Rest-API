@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { NavLink, useNavigate, useParams, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from '../context/UserContext';
 import ReactMarkdown from 'react-markdown';
@@ -7,7 +7,6 @@ import ReactMarkdown from 'react-markdown';
 
 const CourseDetail = () => {
     const navigate = useNavigate(); //get the navigate object
-    const location = useLocation();
     const { id } = useParams();
     const [courseDetail, setCourseDetail] = useState(null);
     const { authUser } = useContext(UserContext);
@@ -28,17 +27,34 @@ const CourseDetail = () => {
                     navigate('/error');
                 }
             });
-            localStorage.setItem('previousLocation', location.pathname);
-    }, [id, navigate, location.pathname]);
+        
+    }, [id, navigate]);
 
 
     const handleDelete = () => {
+        if (!authUser) {
+            // Handle the case where the user is not authenticated
+            return;
+        }
+    
+        const { emailAddress, password } = authUser;
+    
+        const encodedCredentials = btoa(`${emailAddress}:${password}`);
+        
         //send delete request to delete the course
-        axios.delete(`http://localhost:5000/api/courses/${id}`)
-            .then(response => {
-                //navigate to course list after successfully deleting the course
-                navigate('/courses');
-            })
+        const url = `http://localhost:5000/api/courses/${id}`
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Basic ${encodedCredentials}`, // You may need to adjust the authorization header
+            },
+        })
+        .then(response => {
+            if (response.status === 204) {
+                navigate('/');
+                //navigate to course list after successfully deleting the course                
+            }
+        })
             .catch(error => {
                 console.log('Error deleting course', error);
                 if (error.response && error.response.status === 500) {
@@ -58,7 +74,7 @@ const CourseDetail = () => {
             <div className="actions--bar">
                 <div className="wrap">
                     {isCourseOwner() && (
-                        <NavLink className="button" to={`/courses/${id}/update`} state={{ course: courseDetail }}>
+                        <NavLink className="button" to={`/courses/${id}/update`}>
                             Update Course
                         </NavLink>
                     )}

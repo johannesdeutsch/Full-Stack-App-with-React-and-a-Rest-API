@@ -39,7 +39,7 @@ const UserSignIn = () => {
                 setErrors("Sign-in was unsuccessful");
                 errors(setErrors);
             } else if (user) {
-                navigate(from);
+                navigate(from); // Use replace to replace the history entry
             } 
         } catch (error) {
             console.log(error);

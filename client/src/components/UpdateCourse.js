@@ -1,16 +1,19 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ErrorsDisplay from './ErrorsDisplay';
 import { UserContext } from '../context/UserContext';
 
+
+
 const UpdateCourse = () => {
     const { authUser } = useContext(UserContext);
+    console.log(authUser);
     const { id } = useParams();
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const course = location.state && location.state.course;
-
+    
+    const [course, setCourse] = useState({}); 
+    
+    console.log(course);
     const [validationErrors, setValidationErrors] = useState([]);
     const [isCourseOwner, setIsCourseOwner] = useState(false);
 
@@ -22,9 +25,38 @@ const UpdateCourse = () => {
     });
 
     useEffect(() => {
+        const fetchCourseData = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/courses/${id}`);
+                if (response.status === 200) {
+                    const courseData = await response.json();
+                    setCourse(courseData);
+                    // Now you have the course data, and you can set it to the state
+                    setUpdatedCourse({
+                        title: courseData.title,
+                        description: courseData.description,
+                        estimatedTime: courseData.estimatedTime,
+                        materialsNeeded: courseData.materialsNeeded,
+                    });
+                } else if (response.status === 404) {
+                    navigate('/notfound');
+                } else {
+                    navigate('/error');
+                }
+            } catch (error) {
+                console.error('Error fetching course:', error);
+            }
+        };
+    
+        fetchCourseData();
+    }, [id, navigate]);
+
+
+    useEffect(() => {
         // Check if the authenticated user is the owner of the course
         if (!authUser || !course || !course.User || authUser.id !== course.User.id) {
-            // Redirect to the /forbidden path for unauthenticated users or unauthorized access
+            console.log(course);
+            console.log(authUser);// Redirect to the /forbidden path for unauthenticated users or unauthorized access
             navigate('/forbidden');
         } else {
             setIsCourseOwner(true);
